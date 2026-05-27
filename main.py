@@ -8,72 +8,176 @@ st.set_page_config(
     layout="centered"
 )
 
-# 2. 화려한 이자카야 배경 CSS + HTML 🏮🎋
+# 2. 초화려 이자카야 배경 🎆🏮🎋
 st.markdown("""
 <style>
-/* 전체 배경: 깊은 밤 골목 */
+/* ===== 밤하늘 배경 (그라데이션 + 보름달) ===== */
 .stApp {
     background: 
-        radial-gradient(ellipse at top, #2d1b4e 0%, #1a1a2e 50%, #0f0c1d 100%);
+        radial-gradient(circle at 85% 12%, rgba(255, 240, 180, 0.15) 0%, transparent 8%),
+        radial-gradient(circle at 85% 12%, #fff4c4 0%, #f5d76e 3%, transparent 4%),
+        radial-gradient(ellipse at top, #3d2466 0%, #1a1a3e 40%, #0a0a1e 100%);
     background-attachment: fixed;
     color: #f5e6d3 !important;
     overflow-x: hidden;
 }
 
-/* ===== 기와 지붕 ===== */
+/* ===== 멀리 보이는 후지산 실루엣 🗻 ===== */
+.mountain {
+    position: fixed;
+    bottom: 38%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 200px solid transparent;
+    border-right: 200px solid transparent;
+    border-bottom: 150px solid #1a1535;
+    z-index: -3;
+    opacity: 0.6;
+    filter: drop-shadow(0 0 20px rgba(100, 80, 150, 0.4));
+}
+.mountain::before {
+    content: "";
+    position: absolute;
+    top: 20px;
+    left: -40px;
+    width: 80px;
+    height: 30px;
+    background: rgba(255, 255, 255, 0.4);
+    clip-path: polygon(0 100%, 20% 60%, 40% 80%, 60% 50%, 80% 70%, 100% 100%);
+}
+
+/* ===== 멀리 보이는 도시 실루엣 (왼쪽) ===== */
+.city-left {
+    position: fixed;
+    bottom: 38%;
+    left: 0;
+    width: 30%;
+    height: 100px;
+    background: 
+        linear-gradient(90deg,
+            #0f0a25 0px, #0f0a25 30px, transparent 30px, transparent 35px,
+            #0f0a25 35px, #0f0a25 80px, transparent 80px, transparent 88px,
+            #0f0a25 88px, #0f0a25 120px, transparent 120px, transparent 130px,
+            #0f0a25 130px, #0f0a25 170px, transparent 170px, transparent 178px,
+            #0f0a25 178px, #0f0a25 220px, transparent 220px, transparent 230px,
+            #0f0a25 230px, #0f0a25 280px);
+    z-index: -3;
+    opacity: 0.8;
+    mask: linear-gradient(180deg, transparent 0%, black 30%);
+    -webkit-mask: linear-gradient(180deg, transparent 0%, black 30%);
+}
+
+/* 도시 (오른쪽) */
+.city-right {
+    position: fixed;
+    bottom: 38%;
+    right: 0;
+    width: 30%;
+    height: 100px;
+    background: 
+        linear-gradient(90deg,
+            #0f0a25 0px, #0f0a25 40px, transparent 40px, transparent 50px,
+            #0f0a25 50px, #0f0a25 95px, transparent 95px, transparent 105px,
+            #0f0a25 105px, #0f0a25 145px, transparent 145px, transparent 155px,
+            #0f0a25 155px, #0f0a25 200px, transparent 200px, transparent 210px,
+            #0f0a25 210px, #0f0a25 260px);
+    z-index: -3;
+    opacity: 0.8;
+}
+
+/* ===== 폭죽 (밤하늘 불꽃놀이) 🎆 ===== */
+.firework {
+    position: fixed;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    z-index: -2;
+    animation: explode 3s ease-out infinite;
+}
+@keyframes explode {
+    0% { transform: scale(0); opacity: 1; box-shadow: 0 0 0 0 transparent; }
+    50% { 
+        transform: scale(1); 
+        opacity: 1;
+        box-shadow: 
+            0 -40px 0 #ff6b9d, 0 40px 0 #ff6b9d,
+            40px 0 0 #ff6b9d, -40px 0 0 #ff6b9d,
+            28px -28px 0 #ffd93d, -28px -28px 0 #ffd93d,
+            28px 28px 0 #ffd93d, -28px 28px 0 #ffd93d,
+            0 -60px 0 #6bcf7f, 0 60px 0 #6bcf7f,
+            60px 0 0 #6bcf7f, -60px 0 0 #6bcf7f;
+    }
+    100% { transform: scale(1.5); opacity: 0; }
+}
+.firework-1 { top: 8%; left: 15%; animation-delay: 0s; }
+.firework-2 { top: 12%; right: 20%; animation-delay: 1.5s; }
+.firework-3 { top: 18%; left: 45%; animation-delay: 2.8s; }
+
+/* ===== 기와 지붕 (더 화려하게) ===== */
 .roof {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
-    height: 90px;
+    height: 110px;
     z-index: -2;
 }
-/* 기와 패턴 (반복되는 원호) */
-.roof-tiles {
-    position: absolute;
-    top: 30px;
-    left: 0;
-    width: 100%;
-    height: 40px;
-    background: 
-        radial-gradient(circle at 20px 40px, #3d1f1f 0px, #3d1f1f 18px, transparent 19px),
-        radial-gradient(circle at 60px 40px, #3d1f1f 0px, #3d1f1f 18px, transparent 19px),
-        radial-gradient(circle at 100px 40px, #3d1f1f 0px, #3d1f1f 18px, transparent 19px),
-        linear-gradient(180deg, #5a2828 0%, #3d1f1f 100%);
-    background-size: 40px 40px, 40px 40px, 40px 40px, 100% 100%;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.6);
-}
-/* 지붕 윗 띠 */
 .roof-top {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
-    height: 30px;
-    background: linear-gradient(180deg, #1a0e08 0%, #3d1f1f 100%);
-    box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+    height: 35px;
+    background: linear-gradient(180deg, #0a0408 0%, #3d1f1f 100%);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.6);
 }
-/* 지붕 처마 끝 (장식 띠) */
-.roof-bottom {
+/* 지붕 위 황금 장식 (시비) */
+.roof-top::before, .roof-top::after {
+    content: "";
     position: absolute;
-    top: 70px;
+    top: -15px;
+    width: 25px;
+    height: 35px;
+    background: linear-gradient(180deg, #ffd700 0%, #b8860b 100%);
+    clip-path: polygon(50% 0%, 100% 50%, 80% 100%, 20% 100%, 0% 50%);
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.6);
+}
+.roof-top::before { left: 10%; }
+.roof-top::after { right: 10%; }
+
+.roof-tiles {
+    position: absolute;
+    top: 35px;
     left: 0;
     width: 100%;
-    height: 20px;
+    height: 45px;
+    background: 
+        radial-gradient(circle at 20px 45px, #4a2424 0px, #4a2424 18px, transparent 19px),
+        radial-gradient(circle at 60px 45px, #4a2424 0px, #4a2424 18px, transparent 19px),
+        radial-gradient(circle at 100px 45px, #4a2424 0px, #4a2424 18px, transparent 19px),
+        linear-gradient(180deg, #6b2c2c 0%, #3d1f1f 100%);
+    background-size: 40px 45px, 40px 45px, 40px 45px, 100% 100%;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.6);
+}
+.roof-bottom {
+    position: absolute;
+    top: 80px;
+    left: 0;
+    width: 100%;
+    height: 25px;
     background: 
         repeating-linear-gradient(90deg, 
-            #8b2c2c 0px, 
-            #8b2c2c 30px, 
-            #d4af37 30px, 
-            #d4af37 32px,
-            #8b2c2c 32px,
-            #8b2c2c 62px);
-    border-bottom: 3px solid #d4af37;
-    box-shadow: 0 3px 12px rgba(0,0,0,0.5);
+            #8b2c2c 0px, #8b2c2c 25px, 
+            #d4af37 25px, #d4af37 28px,
+            #8b2c2c 28px, #8b2c2c 53px,
+            #1a0e08 53px, #1a0e08 55px);
+    border-bottom: 4px solid #d4af37;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.5), 0 0 20px rgba(212, 175, 55, 0.3);
 }
 
-/* ===== 가게 벽 (나무) ===== */
+/* ===== 가게 벽 (나무 + 디테일) ===== */
 .izakaya-wall {
     position: fixed;
     bottom: 0;
@@ -82,93 +186,99 @@ st.markdown("""
     height: 40%;
     background: 
         repeating-linear-gradient(90deg,
-            #3d2817 0px,
-            #4a2f1c 70px,
-            #3d2817 72px,
-            #2a1810 74px,
-            #3d2817 76px),
+            #3d2817 0px, #4a2f1c 70px,
+            #3d2817 72px, #2a1810 74px, #3d2817 76px),
         linear-gradient(180deg, #3a2515 0%, #1a0e08 100%);
     z-index: -2;
     box-shadow: inset 0 15px 30px rgba(0,0,0,0.7);
 }
 
-/* ===== 일본식 격자창 (왼쪽) ===== */
-.window-left {
+/* 가게 벽 위 황금 띠 장식 */
+.wall-trim {
     position: fixed;
-    bottom: 12%;
-    left: 3%;
-    width: 130px;
-    height: 100px;
+    bottom: 40%;
+    left: 0;
+    width: 100%;
+    height: 8px;
+    background: linear-gradient(90deg, 
+        #d4af37 0%, #ffd700 50%, #d4af37 100%);
+    z-index: -1;
+    box-shadow: 
+        0 0 15px rgba(255, 215, 0, 0.5),
+        0 2px 8px rgba(0,0,0,0.4);
+}
+
+/* ===== 일본식 격자창 (왼쪽 2개) ===== */
+.window-l1, .window-l2, .window-r1, .window-r2 {
+    position: fixed;
+    bottom: 15%;
+    width: 110px;
+    height: 90px;
     background: 
-        linear-gradient(180deg, 
-            rgba(255, 200, 100, 0.4) 0%, 
+        radial-gradient(ellipse at center,
+            rgba(255, 220, 130, 0.6) 0%, 
             rgba(255, 150, 50, 0.3) 100%);
     border: 4px solid #2a1810;
     box-shadow: 
-        0 0 30px rgba(255, 180, 80, 0.4),
-        inset 0 0 20px rgba(255, 200, 100, 0.3);
+        0 0 35px rgba(255, 180, 80, 0.5),
+        inset 0 0 25px rgba(255, 220, 130, 0.4);
     z-index: -2;
+    animation: windowFlicker 4s ease-in-out infinite;
 }
-/* 격자 패턴 */
-.window-left::before {
+.window-l1 { left: 3%; }
+.window-l2 { left: 17%; animation-delay: -1s; }
+.window-r1 { right: 3%; animation-delay: -2s; }
+.window-r2 { right: 17%; animation-delay: -3s; }
+
+.window-l1::before, .window-l2::before, .window-r1::before, .window-r2::before {
     content: "";
     position: absolute;
     top: 0; left: 0;
     width: 100%; height: 100%;
     background: 
-        linear-gradient(90deg, transparent 32%, #2a1810 32%, #2a1810 35%, transparent 35%,
-                              transparent 65%, #2a1810 65%, #2a1810 68%, transparent 68%),
-        linear-gradient(0deg, transparent 32%, #2a1810 32%, #2a1810 35%, transparent 35%,
+        linear-gradient(90deg, transparent 23%, #2a1810 23%, #2a1810 26%, transparent 26%,
+                              transparent 48%, #2a1810 48%, #2a1810 51%, transparent 51%,
+                              transparent 73%, #2a1810 73%, #2a1810 76%, transparent 76%),
+        linear-gradient(0deg, transparent 30%, #2a1810 30%, #2a1810 33%, transparent 33%,
                               transparent 65%, #2a1810 65%, #2a1810 68%, transparent 68%);
 }
-
-/* 격자창 (오른쪽) */
-.window-right {
-    position: fixed;
-    bottom: 12%;
-    right: 3%;
-    width: 130px;
-    height: 100px;
-    background: 
-        linear-gradient(180deg, 
-            rgba(255, 200, 100, 0.4) 0%, 
-            rgba(255, 150, 50, 0.3) 100%);
-    border: 4px solid #2a1810;
-    box-shadow: 
-        0 0 30px rgba(255, 180, 80, 0.4),
-        inset 0 0 20px rgba(255, 200, 100, 0.3);
-    z-index: -2;
-}
-.window-right::before {
+/* 창문 안 사람 그림자 (특정 창에만) */
+.window-l2::after, .window-r1::after {
     content: "";
     position: absolute;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    background: 
-        linear-gradient(90deg, transparent 32%, #2a1810 32%, #2a1810 35%, transparent 35%,
-                              transparent 65%, #2a1810 65%, #2a1810 68%, transparent 68%),
-        linear-gradient(0deg, transparent 32%, #2a1810 32%, #2a1810 35%, transparent 35%,
-                              transparent 65%, #2a1810 65%, #2a1810 68%, transparent 68%);
+    bottom: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 30px;
+    height: 50px;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 50% 50% 20% 20%;
 }
 
-/* ===== 노렌 (입구 천) - 가게 중앙 ===== */
+@keyframes windowFlicker {
+    0%, 100% { box-shadow: 0 0 35px rgba(255, 180, 80, 0.5), inset 0 0 25px rgba(255, 220, 130, 0.4); }
+    50% { box-shadow: 0 0 45px rgba(255, 200, 100, 0.7), inset 0 0 30px rgba(255, 230, 150, 0.6); }
+}
+
+/* ===== 노렌 (입구 천) ===== */
 .noren {
     position: fixed;
     bottom: 40%;
     left: 50%;
     transform: translateX(-50%);
-    width: 320px;
-    height: 75px;
+    width: 340px;
+    height: 80px;
     background: 
         linear-gradient(180deg, #a02020 0%, #6b1515 100%);
     z-index: -1;
     border-radius: 3px 3px 0 0;
     box-shadow: 
-        0 5px 20px rgba(0,0,0,0.6),
-        inset 0 -8px 15px rgba(0,0,0,0.3);
+        0 5px 25px rgba(0,0,0,0.7),
+        inset 0 -10px 20px rgba(0,0,0,0.4),
+        0 0 30px rgba(160, 32, 32, 0.4);
     animation: norenSway 5s ease-in-out infinite;
     transform-origin: top center;
-    border-top: 4px solid #d4af37;
+    border-top: 5px solid #d4af37;
 }
 .noren::before {
     content: "居 酒 屋";
@@ -177,14 +287,13 @@ st.markdown("""
     left: 50%;
     transform: translate(-50%, -50%);
     color: #f5e6d3;
-    font-size: 28px;
+    font-size: 30px;
     font-weight: bold;
-    letter-spacing: 12px;
+    letter-spacing: 14px;
     text-shadow: 
-        0 0 10px rgba(255,200,100,0.6),
-        2px 2px 4px rgba(0,0,0,0.5);
+        0 0 12px rgba(255,200,100,0.8),
+        2px 2px 4px rgba(0,0,0,0.6);
 }
-/* 노렌 갈라진 틈 3개 */
 .noren::after {
     content: "";
     position: absolute;
@@ -194,59 +303,78 @@ st.markdown("""
     height: 80%;
     background: 
         linear-gradient(90deg, 
-            transparent 24%, #1a0e08 24%, #1a0e08 26%, transparent 26%,
-            transparent 49%, #1a0e08 49%, #1a0e08 51%, transparent 51%,
-            transparent 74%, #1a0e08 74%, #1a0e08 76%, transparent 76%);
+            transparent 19%, #1a0e08 19%, #1a0e08 21%, transparent 21%,
+            transparent 39%, #1a0e08 39%, #1a0e08 41%, transparent 41%,
+            transparent 59%, #1a0e08 59%, #1a0e08 61%, transparent 61%,
+            transparent 79%, #1a0e08 79%, #1a0e08 81%, transparent 81%);
 }
 @keyframes norenSway {
     0%, 100% { transform: translateX(-50%) rotate(-1.5deg); }
     50% { transform: translateX(-50%) rotate(1.5deg); }
 }
 
-/* ===== 대나무 장식 (왼쪽) ===== */
-.bamboo-left {
+/* ===== 작은 사이드 노렌 (양옆) ===== */
+.mini-noren-left, .mini-noren-right {
     position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 25px;
-    height: 50%;
-    background: linear-gradient(180deg, #4a6b3a 0%, #2d4220 100%);
-    z-index: -2;
-    box-shadow: 3px 0 10px rgba(0,0,0,0.4);
+    bottom: 40%;
+    width: 80px;
+    height: 50px;
+    background: linear-gradient(180deg, #1a4d8c 0%, #0d2e57 100%);
+    z-index: -1;
+    border-top: 3px solid #d4af37;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.5);
+    animation: norenSway 6s ease-in-out infinite;
+    transform-origin: top center;
 }
-.bamboo-left::before, .bamboo-left::after {
-    content: "";
+.mini-noren-left { left: 32%; animation-delay: -1s; }
+.mini-noren-right { right: 32%; animation-delay: -2s; }
+.mini-noren-left::before, .mini-noren-right::before {
+    content: "祭";
     position: absolute;
-    left: 0;
-    width: 100%;
-    height: 3px;
-    background: #1a2a10;
-}
-.bamboo-left::before { top: 25%; box-shadow: 0 80px 0 #1a2a10, 0 160px 0 #1a2a10, 0 240px 0 #1a2a10; }
-
-/* 대나무 (오른쪽) */
-.bamboo-right {
-    position: fixed;
-    bottom: 0;
-    right: 0;
-    width: 25px;
-    height: 50%;
-    background: linear-gradient(180deg, #4a6b3a 0%, #2d4220 100%);
-    z-index: -2;
-    box-shadow: -3px 0 10px rgba(0,0,0,0.4);
-}
-.bamboo-right::before {
-    content: "";
-    position: absolute;
-    top: 25%;
-    left: 0;
-    width: 100%;
-    height: 3px;
-    background: #1a2a10;
-    box-shadow: 0 80px 0 #1a2a10, 0 160px 0 #1a2a10, 0 240px 0 #1a2a10;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    color: #f5e6d3;
+    font-size: 22px;
+    font-weight: bold;
+    text-shadow: 0 0 8px rgba(255,200,100,0.6);
 }
 
-/* ===== 등불 (양쪽 끝에 배치) ===== */
+/* ===== 대나무 (양쪽) ===== */
+.bamboo-left, .bamboo-right {
+    position: fixed;
+    bottom: 0;
+    width: 28px;
+    height: 50%;
+    background: linear-gradient(180deg, #5a7d44 0%, #2d4220 100%);
+    z-index: -2;
+    box-shadow: 3px 0 12px rgba(0,0,0,0.5);
+}
+.bamboo-left { left: 0; }
+.bamboo-right { right: 0; }
+.bamboo-left::before, .bamboo-right::before {
+    content: "";
+    position: absolute;
+    top: 15%; left: 0;
+    width: 100%; height: 4px;
+    background: #1a2a10;
+    box-shadow: 
+        0 70px 0 #1a2a10, 
+        0 140px 0 #1a2a10, 
+        0 210px 0 #1a2a10,
+        0 280px 0 #1a2a10;
+}
+/* 대나무 잎사귀 */
+.bamboo-left::after, .bamboo-right::after {
+    content: "🎋";
+    position: absolute;
+    top: -25px;
+    left: -10px;
+    font-size: 40px;
+    transform: rotate(-15deg);
+}
+.bamboo-right::after { left: auto; right: -10px; transform: rotate(15deg); }
+
+/* ===== 등불 (양쪽 4개, 더 화려하게) ===== */
 .lantern-container {
     position: fixed;
     top: 0;
@@ -258,21 +386,33 @@ st.markdown("""
 
 .lantern-wrap {
     position: absolute;
-    top: 90px;
+    top: 110px;
     transform-origin: top center;
     animation: swing 4s ease-in-out infinite;
 }
 
 .lantern-string {
     width: 2px;
-    height: 60px;
+    height: 50px;
     background: linear-gradient(180deg, #5a3a20 0%, #3d2515 100%);
     margin: 0 auto;
 }
+/* 등불 위 매듭 */
+.lantern-string::before {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: -3px;
+    width: 8px;
+    height: 8px;
+    background: #d4af37;
+    border-radius: 50%;
+    box-shadow: 0 0 8px rgba(212, 175, 55, 0.6);
+}
 
 .lantern-body {
-    width: 65px;
-    height: 85px;
+    width: 70px;
+    height: 90px;
     background: radial-gradient(ellipse at center, 
         #fff2a8 0%, 
         #ffb347 25%, 
@@ -283,11 +423,11 @@ st.markdown("""
     margin: 0 auto;
     position: relative;
     box-shadow: 
-        0 0 40px rgba(255, 140, 66, 0.8),
-        0 0 80px rgba(255, 140, 66, 0.5),
-        0 0 140px rgba(255, 140, 66, 0.3),
-        inset 0 -12px 25px rgba(0,0,0,0.4),
-        inset 0 8px 15px rgba(255, 240, 180, 0.3);
+        0 0 50px rgba(255, 140, 66, 0.9),
+        0 0 100px rgba(255, 140, 66, 0.6),
+        0 0 160px rgba(255, 140, 66, 0.3),
+        inset 0 -15px 25px rgba(0,0,0,0.4),
+        inset 0 10px 20px rgba(255, 240, 180, 0.3);
     animation: glow 3s ease-in-out infinite;
 }
 .lantern-body::before, .lantern-body::after {
@@ -295,87 +435,217 @@ st.markdown("""
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
-    width: 38px;
-    height: 8px;
+    width: 42px;
+    height: 9px;
     background: linear-gradient(180deg, #2a1810 0%, #1a0e08 100%);
     border-radius: 3px;
+    box-shadow: 0 0 5px rgba(0,0,0,0.5);
 }
-.lantern-body::before { top: -4px; }
-.lantern-body::after { bottom: -4px; }
+.lantern-body::before { top: -5px; }
+.lantern-body::after { bottom: -5px; }
 
-/* 등불 가로 줄무늬 (더 진하게) */
 .lantern-stripes {
     position: absolute;
-    top: 25%;
+    top: 22%;
     left: 0;
     width: 100%;
     height: 1.5px;
     background: rgba(0,0,0,0.5);
     box-shadow: 
-        0 13px 0 rgba(0,0,0,0.5),
-        0 26px 0 rgba(0,0,0,0.5),
-        0 39px 0 rgba(0,0,0,0.5);
+        0 14px 0 rgba(0,0,0,0.5),
+        0 28px 0 rgba(0,0,0,0.5),
+        0 42px 0 rgba(0,0,0,0.5);
 }
-/* 등불 글자 */
 .lantern-body span {
     position: absolute;
-    top: 50%;
-    left: 50%;
+    top: 50%; left: 50%;
     transform: translate(-50%, -50%);
     color: #2a0a0a;
-    font-size: 22px;
+    font-size: 26px;
     font-weight: bold;
-    text-shadow: 0 0 3px rgba(255, 220, 150, 0.8);
+    text-shadow: 0 0 4px rgba(255, 220, 150, 0.9);
     z-index: 2;
 }
 
-/* 등불 위치: 양쪽 끝 + 살짝 안쪽 */
-.lantern-left-1 { left: 5%; }
+/* 등불 술(태슬) 장식 */
+.lantern-body .tassel {
+    position: absolute;
+    bottom: -35px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 4px;
+    height: 25px;
+    background: linear-gradient(180deg, #d4af37 0%, #b8860b 100%);
+    font-size: 0;
+}
+.lantern-body .tassel::before {
+    content: "";
+    position: absolute;
+    bottom: -8px;
+    left: -8px;
+    width: 20px;
+    height: 15px;
+    background: 
+        repeating-linear-gradient(90deg, #d4af37 0px, #d4af37 2px, #b8860b 2px, #b8860b 4px);
+    border-radius: 0 0 50% 50%;
+}
+
+.lantern-left-1 { left: 4%; }
 .lantern-left-1 .lantern-wrap { animation-delay: 0s; }
-.lantern-left-2 { left: 18%; }
+.lantern-left-2 { left: 16%; }
 .lantern-left-2 .lantern-wrap { animation-delay: -1.5s; }
-.lantern-right-1 { right: 5%; }
+.lantern-right-1 { right: 4%; }
 .lantern-right-1 .lantern-wrap { animation-delay: -2s; }
-.lantern-right-2 { right: 18%; }
+.lantern-right-2 { right: 16%; }
 .lantern-right-2 .lantern-wrap { animation-delay: -0.8s; }
 
 @keyframes swing {
     0%, 100% { transform: rotate(-5deg); }
     50% { transform: rotate(5deg); }
 }
-
 @keyframes glow {
     0%, 100% { 
         box-shadow: 
-            0 0 40px rgba(255, 140, 66, 0.8),
-            0 0 80px rgba(255, 140, 66, 0.5),
-            0 0 140px rgba(255, 140, 66, 0.3),
-            inset 0 -12px 25px rgba(0,0,0,0.4);
+            0 0 50px rgba(255, 140, 66, 0.9),
+            0 0 100px rgba(255, 140, 66, 0.6),
+            0 0 160px rgba(255, 140, 66, 0.3),
+            inset 0 -15px 25px rgba(0,0,0,0.4);
     }
     50% { 
         box-shadow: 
-            0 0 55px rgba(255, 200, 100, 1),
-            0 0 110px rgba(255, 200, 100, 0.7),
-            0 0 180px rgba(255, 200, 100, 0.4),
-            inset 0 -12px 25px rgba(0,0,0,0.4);
+            0 0 70px rgba(255, 200, 100, 1),
+            0 0 140px rgba(255, 200, 100, 0.8),
+            0 0 220px rgba(255, 200, 100, 0.5),
+            inset 0 -15px 25px rgba(0,0,0,0.4);
     }
 }
 
-/* ===== 벚꽃잎 떨어지는 애니메이션 🌸 ===== */
+/* ===== 가랜드 (오색 깃발 줄) 🎏 ===== */
+.garland {
+    position: fixed;
+    top: 130px;
+    left: 0;
+    width: 100%;
+    height: 40px;
+    z-index: -1;
+    display: flex;
+    justify-content: space-around;
+    padding: 0 5%;
+}
+.flag {
+    width: 0;
+    height: 0;
+    border-left: 12px solid transparent;
+    border-right: 12px solid transparent;
+    border-top: 20px solid;
+    animation: flagWave 3s ease-in-out infinite;
+}
+.flag:nth-child(1) { border-top-color: #ff6b9d; animation-delay: 0s; }
+.flag:nth-child(2) { border-top-color: #ffd93d; animation-delay: 0.2s; }
+.flag:nth-child(3) { border-top-color: #6bcf7f; animation-delay: 0.4s; }
+.flag:nth-child(4) { border-top-color: #4ecdc4; animation-delay: 0.6s; }
+.flag:nth-child(5) { border-top-color: #c780ff; animation-delay: 0.8s; }
+.flag:nth-child(6) { border-top-color: #ff6b9d; animation-delay: 1s; }
+.flag:nth-child(7) { border-top-color: #ffd93d; animation-delay: 1.2s; }
+.flag:nth-child(8) { border-top-color: #6bcf7f; animation-delay: 1.4s; }
+.flag:nth-child(9) { border-top-color: #4ecdc4; animation-delay: 1.6s; }
+.flag:nth-child(10) { border-top-color: #c780ff; animation-delay: 1.8s; }
+.flag:nth-child(11) { border-top-color: #ff6b9d; animation-delay: 2s; }
+.flag:nth-child(12) { border-top-color: #ffd93d; animation-delay: 2.2s; }
+
+@keyframes flagWave {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-5px) rotate(5deg); }
+}
+/* 가랜드 줄 */
+.garland::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 5%;
+    width: 90%;
+    height: 2px;
+    background: #5a3a20;
+    box-shadow: 0 0 5px rgba(0,0,0,0.4);
+}
+
+/* ===== 길거리 등 (지면 가까이) 🏮 ===== */
+.street-lamp-l, .street-lamp-r {
+    position: fixed;
+    bottom: 5%;
+    width: 8px;
+    height: 120px;
+    background: linear-gradient(180deg, #2a1810 0%, #1a0e08 100%);
+    z-index: -1;
+}
+.street-lamp-l { left: 6%; }
+.street-lamp-r { right: 6%; }
+.street-lamp-l::before, .street-lamp-r::before {
+    content: "";
+    position: absolute;
+    top: -20px;
+    left: -15px;
+    width: 38px;
+    height: 50px;
+    background: radial-gradient(ellipse at center, 
+        #fff2a8 0%, #ffb347 50%, #c62828 100%);
+    border-radius: 50% 50% 30% 30%;
+    box-shadow: 
+        0 0 30px rgba(255, 180, 80, 0.8),
+        0 0 60px rgba(255, 180, 80, 0.5);
+    animation: glow 3s ease-in-out infinite;
+}
+
+/* ===== 사케 통 (벽 앞 장식) 🍶 ===== */
+.sake-barrel-l, .sake-barrel-r {
+    position: fixed;
+    bottom: 5%;
+    width: 60px;
+    height: 70px;
+    background: 
+        repeating-linear-gradient(180deg,
+            #8b6f47 0px, #8b6f47 8px,
+            #2a1810 8px, #2a1810 10px,
+            #8b6f47 10px, #8b6f47 18px);
+    border-radius: 8px;
+    border: 3px solid #2a1810;
+    z-index: -1;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+}
+.sake-barrel-l { left: 28%; }
+.sake-barrel-r { right: 28%; }
+.sake-barrel-l::before, .sake-barrel-r::before {
+    content: "酒";
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    color: #2a1810;
+    font-size: 24px;
+    font-weight: bold;
+    background: #f5e6d3;
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid #2a1810;
+}
+
+/* ===== 벚꽃잎 ===== */
 .sakura {
     position: fixed;
     width: 12px;
     height: 12px;
     background: radial-gradient(circle, #ffb7c5 0%, #ff8fab 100%);
     border-radius: 0 100% 0 100%;
-    opacity: 0.7;
+    opacity: 0.8;
     z-index: -1;
     animation: fall linear infinite;
 }
 @keyframes fall {
     0% { transform: translateY(-10vh) rotate(0deg); opacity: 0; }
-    10% { opacity: 0.7; }
-    90% { opacity: 0.7; }
+    10% { opacity: 0.8; }
+    90% { opacity: 0.8; }
     100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
 }
 
@@ -394,22 +664,23 @@ st.markdown("""
     50% { opacity: 1; }
 }
 
-/* ===== Streamlit 콘텐츠 박스 ===== */
+/* ===== 콘텐츠 박스 ===== */
 .block-container {
-    background: rgba(20, 15, 35, 0.85);
+    background: rgba(20, 15, 35, 0.88);
     border-radius: 20px;
     padding: 2rem !important;
     backdrop-filter: blur(10px);
-    border: 2px solid rgba(212, 175, 55, 0.4);
+    border: 2px solid rgba(212, 175, 55, 0.5);
     box-shadow: 
-        0 8px 32px rgba(0, 0, 0, 0.5),
-        0 0 60px rgba(255, 183, 77, 0.15);
-    margin-top: 7rem;
+        0 8px 32px rgba(0, 0, 0, 0.6),
+        0 0 80px rgba(255, 183, 77, 0.2),
+        inset 0 0 30px rgba(212, 175, 55, 0.05);
+    margin-top: 9rem;
 }
 
 h1, h2, h3 {
     color: #ffd9a0 !important;
-    text-shadow: 0 0 15px rgba(255, 183, 77, 0.6);
+    text-shadow: 0 0 18px rgba(255, 183, 77, 0.7);
 }
 p, label, .stMarkdown, span:not(.lantern-body span) {
     color: #f5e6d3 !important;
@@ -430,14 +701,14 @@ p, label, .stMarkdown, span:not(.lantern-body span) {
     padding: 12px 35px;
     box-shadow: 
         0 4px 20px rgba(255, 138, 101, 0.5),
-        0 0 30px rgba(212, 175, 55, 0.3);
+        0 0 35px rgba(212, 175, 55, 0.4);
     transition: all 0.3s ease;
 }
 .stButton > button:hover {
     transform: translateY(-3px) scale(1.05);
     box-shadow: 
-        0 6px 25px rgba(255, 138, 101, 0.8),
-        0 0 50px rgba(212, 175, 55, 0.5);
+        0 6px 30px rgba(255, 138, 101, 0.9),
+        0 0 60px rgba(212, 175, 55, 0.7);
 }
 
 .stAlert {
@@ -448,20 +719,35 @@ hr { border-color: rgba(212, 175, 55, 0.4); }
 </style>
 
 <!-- 별 -->
-<div class="star" style="top: 3%; left: 15%;"></div>
-<div class="star" style="top: 5%; left: 35%; animation-delay: 0.5s;"></div>
-<div class="star" style="top: 2%; left: 55%; animation-delay: 1s;"></div>
-<div class="star" style="top: 6%; left: 78%; animation-delay: 1.5s;"></div>
-<div class="star" style="top: 4%; left: 92%; animation-delay: 2s;"></div>
+<div class="star" style="top: 3%; left: 8%;"></div>
+<div class="star" style="top: 6%; left: 22%; animation-delay: 0.5s;"></div>
+<div class="star" style="top: 2%; left: 38%; animation-delay: 1s;"></div>
+<div class="star" style="top: 5%; left: 55%; animation-delay: 1.5s;"></div>
+<div class="star" style="top: 7%; left: 70%; animation-delay: 2s;"></div>
+<div class="star" style="top: 4%; left: 88%; animation-delay: 2.5s;"></div>
+<div class="star" style="top: 18%; left: 30%; animation-delay: 0.8s;"></div>
+<div class="star" style="top: 22%; left: 65%; animation-delay: 1.8s;"></div>
+<div class="star" style="top: 15%; left: 50%; animation-delay: 2.2s;"></div>
+
+<!-- 불꽃놀이 🎆 -->
+<div class="firework firework-1"></div>
+<div class="firework firework-2"></div>
+<div class="firework firework-3"></div>
+
+<!-- 멀리 풍경 -->
+<div class="city-left"></div>
+<div class="city-right"></div>
+<div class="mountain"></div>
 
 <!-- 벚꽃잎 🌸 -->
-<div class="sakura" style="left: 10%; animation-duration: 12s; animation-delay: 0s;"></div>
-<div class="sakura" style="left: 30%; animation-duration: 15s; animation-delay: 3s;"></div>
-<div class="sakura" style="left: 50%; animation-duration: 10s; animation-delay: 6s;"></div>
-<div class="sakura" style="left: 70%; animation-duration: 14s; animation-delay: 2s;"></div>
-<div class="sakura" style="left: 85%; animation-duration: 13s; animation-delay: 5s;"></div>
-<div class="sakura" style="left: 20%; animation-duration: 16s; animation-delay: 8s;"></div>
-<div class="sakura" style="left: 60%; animation-duration: 11s; animation-delay: 10s;"></div>
+<div class="sakura" style="left: 5%; animation-duration: 12s; animation-delay: 0s;"></div>
+<div class="sakura" style="left: 18%; animation-duration: 15s; animation-delay: 3s;"></div>
+<div class="sakura" style="left: 30%; animation-duration: 10s; animation-delay: 6s;"></div>
+<div class="sakura" style="left: 42%; animation-duration: 14s; animation-delay: 2s;"></div>
+<div class="sakura" style="left: 55%; animation-duration: 13s; animation-delay: 5s;"></div>
+<div class="sakura" style="left: 68%; animation-duration: 16s; animation-delay: 8s;"></div>
+<div class="sakura" style="left: 80%; animation-duration: 11s; animation-delay: 10s;"></div>
+<div class="sakura" style="left: 92%; animation-duration: 13s; animation-delay: 4s;"></div>
 
 <!-- 기와 지붕 -->
 <div class="roof">
@@ -470,7 +756,15 @@ hr { border-color: rgba(212, 175, 55, 0.4); }
     <div class="roof-bottom"></div>
 </div>
 
-<!-- 등불 4개: 양쪽 끝 2개씩 -->
+<!-- 가랜드 (오색 깃발) 🎏 -->
+<div class="garland">
+    <div class="flag"></div><div class="flag"></div><div class="flag"></div>
+    <div class="flag"></div><div class="flag"></div><div class="flag"></div>
+    <div class="flag"></div><div class="flag"></div><div class="flag"></div>
+    <div class="flag"></div><div class="flag"></div><div class="flag"></div>
+</div>
+
+<!-- 등불 4개 -->
 <div class="lantern-container">
     <div class="lantern-left-1">
         <div class="lantern-wrap">
@@ -478,6 +772,7 @@ hr { border-color: rgba(212, 175, 55, 0.4); }
             <div class="lantern-body">
                 <div class="lantern-stripes"></div>
                 <span>酒</span>
+                <div class="tassel"></div>
             </div>
         </div>
     </div>
@@ -487,6 +782,7 @@ hr { border-color: rgba(212, 175, 55, 0.4); }
             <div class="lantern-body">
                 <div class="lantern-stripes"></div>
                 <span>福</span>
+                <div class="tassel"></div>
             </div>
         </div>
     </div>
@@ -496,6 +792,7 @@ hr { border-color: rgba(212, 175, 55, 0.4); }
             <div class="lantern-body">
                 <div class="lantern-stripes"></div>
                 <span>祭</span>
+                <div class="tassel"></div>
             </div>
         </div>
     </div>
@@ -505,29 +802,41 @@ hr { border-color: rgba(212, 175, 55, 0.4); }
             <div class="lantern-body">
                 <div class="lantern-stripes"></div>
                 <span>味</span>
+                <div class="tassel"></div>
             </div>
         </div>
     </div>
 </div>
 
-<!-- 대나무 장식 -->
+<!-- 대나무 -->
 <div class="bamboo-left"></div>
 <div class="bamboo-right"></div>
 
 <!-- 가게 벽 + 격자창 + 노렌 -->
 <div class="izakaya-wall"></div>
-<div class="window-left"></div>
-<div class="window-right"></div>
+<div class="wall-trim"></div>
+<div class="window-l1"></div>
+<div class="window-l2"></div>
+<div class="window-r1"></div>
+<div class="window-r2"></div>
+<div class="mini-noren-left"></div>
+<div class="mini-noren-right"></div>
 <div class="noren"></div>
+
+<!-- 길거리 등 + 사케 통 -->
+<div class="street-lamp-l"></div>
+<div class="street-lamp-r"></div>
+<div class="sake-barrel-l"></div>
+<div class="sake-barrel-r"></div>
 """, unsafe_allow_html=True)
 
 # 3. 타이틀
 st.title("🏮 이자카야 MBTI 저녁 추천 🍶")
 st.markdown("### **🌙 어서오세요, 오늘도 수고 많으셨어요.**")
-st.write("당신의 MBTI와 오늘 기분을 알려주시면, 따스한 한 끼를 추천해 드릴게요. 🎋✨")
+st.write("당신의 MBTI와 오늘 기분을 알려주시면, 따스한 한 끼를 추천해 드릴게요. 🎋🎆")
 st.write("---")
 
-# 4. MBTI × 기분 조합 데이터
+# 4. 메뉴 데이터
 mood_list = ["😄 신난다", "😴 피곤하다", "😢 우울하다", "😡 스트레스", "🥰 설렌다"]
 
 default_meals = {
@@ -558,7 +867,6 @@ default_meals = {
     ],
 }
 
-# 16가지 MBTI 모두 동일 데이터로 (학생이 직접 커스터마이즈 추천!)
 all_mbti = ["INFP","ENFP","INFJ","ENFJ","INTJ","ENTJ","INTP","ENTP",
             "ISFP","ESFP","ISTP","ESTP","ISFJ","ESFJ","ISTJ","ESTJ"]
 mbti_data = {m: default_meals for m in all_mbti}
